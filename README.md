@@ -29,15 +29,19 @@ Windows:
 2. `run.bat` builds the image and runs it with `DISPLAY` pointed at your
    host, so the GUI window pops up on your desktop as if it were local.
 
-## Sharing with colleagues
+## Sharing with colleagues via Docker Hub
+One-time: create a [Docker Hub](https://hub.docker.com) account, then locally:
 ```
-docker build -t tk-app .
-docker save tk-app | gzip > tk-app.tar.gz     # ship this file
+docker login
 ```
-Colleague side:
+Publish:
 ```
-docker load < tk-app.tar.gz
-run.bat
+push.bat <your-dockerhub-username>
 ```
-(or push to a registry — Docker Hub / internal registry — instead of
-`save`/`load` if they should just `docker pull`.)
+Colleague side (no build, no repo clone needed — just Docker + VcXsrv):
+```
+pull.bat <your-dockerhub-username>
+```
+Image is public by default on Docker Hub's free tier — make it private in
+the Docker Hub UI if the code/data shouldn't be public, and have colleagues
+`docker login` first in that case.
