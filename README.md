@@ -1,0 +1,43 @@
+# Dockerizing a tkinter + batch-file app
+
+## Layout
+```
+app/main.py          tkinter GUI, orchestrates processing via subprocess
+app/process.sh        stand-in for your data-processing logic
+app/requirements.txt  add real pip deps here
+Dockerfile
+run.bat               build + run on Windows
+```
+
+## The catch: .bat won't run in the container
+Docker containers here are Linux. `cmd.exe` and `.bat` scripts don't exist there.
+Port each `.bat`'s logic to a `.sh` script (or straight Python) — same steps,
+different shell. The GUI still calls it the same way, just via `sh` instead
+of `cmd`:
+```python
+subprocess.run(["sh", "process.sh"])
+```
+If a `.bat` shells out to a Windows-only exe (e.g. some proprietary tool),
+that exe needs a Linux build/equivalent too, or you're stuck on Windows
+containers.
+
+## GUI in a container = no display
+The container has no screen. tkinter needs an X server to draw to, so on
+Windows:
+1. Install [VcXsrv](https://sourceforge.net/projects/vcxsrv/), run XLaunch,
+   check "Disable access control".
+2. `run.bat` builds the image and runs it with `DISPLAY` pointed at your
+   host, so the GUI window pops up on your desktop as if it were local.
+
+## Sharing with colleagues
+```
+docker build -t tk-app .
+docker save tk-app | gzip > tk-app.tar.gz     # ship this file
+```
+Colleague side:
+```
+docker load < tk-app.tar.gz
+run.bat
+```
+(or push to a registry — Docker Hub / internal registry — instead of
+`save`/`load` if they should just `docker pull`.)

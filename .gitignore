@@ -1,0 +1,17 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# env / secrets
+.env
+.env.*
+
+# os cruft
+Thumbs.db
+.DS_Store
+
+# editor
+.vscode/
+.idea/

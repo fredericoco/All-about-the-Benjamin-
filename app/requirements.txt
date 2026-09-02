@@ -1,0 +1,2 @@
+# tkinter ships with python, no pip install needed.
+# add your app's real deps here (requests, pillow, etc.)
