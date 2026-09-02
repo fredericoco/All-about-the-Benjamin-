@@ -30,17 +30,16 @@ Windows:
    host, so the GUI window pops up on your desktop as if it were local.
 
 ## Sharing with colleagues via Docker Hub
-One-time: create a [Docker Hub](https://hub.docker.com) account, then locally:
+One-time: create a [Docker Hub](https://hub.docker.com) account, then:
 ```
 docker login
-```
-Publish:
-```
-push.bat <your-dockerhub-username>
+docker build -t <your-dockerhub-username>/tk-app:latest .
+docker push <your-dockerhub-username>/tk-app:latest
 ```
 Colleague side (no build, no repo clone needed — just Docker + VcXsrv):
 ```
-pull.bat <your-dockerhub-username>
+docker pull <your-dockerhub-username>/tk-app:latest
+docker run --rm -e DISPLAY=host.docker.internal:0 <your-dockerhub-username>/tk-app:latest
 ```
 Image is public by default on Docker Hub's free tier — make it private in
 the Docker Hub UI if the code/data shouldn't be public, and have colleagues

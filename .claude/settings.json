@@ -14,7 +14,8 @@
       "Bash(git remote *)",
       "Bash(git push *)",
       "Bash(docker info *)",
-      "Read(//c/Users/frede/.docker/**)"
+      "Read(//c/Users/frede/.docker/**)",
+      "Bash(git rm *)"
     ]
   }
 }
